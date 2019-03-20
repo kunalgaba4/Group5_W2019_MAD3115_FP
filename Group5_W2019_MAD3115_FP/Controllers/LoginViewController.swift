@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: UITextField!
@@ -43,24 +43,27 @@ class LoginViewController: UIViewController {
             return
         }
         
-        
-        
-        if userOrEmail == "a@gmail.com" || password == "12345" {
+        Auth.auth().signIn(withEmail: userOrEmail!, password: password!) { (result, error) in
+            if let error = error {
+                print("Failed to sign user in with error: ", error.localizedDescription)
+                self.showAlert(title: "Error !!", message: "Id or password is Invalid")
+                return
+            }
+            
             let userdefault = UserDefaults.standard
-            if rememberMeSwitch.isOn {
-                userdefault.set(usernameTextField.text,forKey:"userEmail")
-                userdefault.set(passwordTextField.text, forKey: "pass")
+            if self.rememberMeSwitch.isOn {
+                userdefault.set(self.usernameTextField.text,forKey:"userEmail")
+                userdefault.set(self.passwordTextField.text, forKey: "pass")
             }else{
                 userdefault.removeObject(forKey: "userEmail")
                 userdefault.removeObject(forKey: "pass")
             }
-            showHomeView()
-            
-            
-        }else{
-            showAlert(title: "Error !!", message: "Id or password is Invalid")
-            return
+            self.showHomeView()
         }
+        
+        
+        
+        
     }
     func  showHomeView() {
         performSegue(withIdentifier: "home", sender: nil)

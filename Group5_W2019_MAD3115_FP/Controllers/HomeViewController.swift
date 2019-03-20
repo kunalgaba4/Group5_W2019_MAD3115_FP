@@ -14,14 +14,13 @@ class HomeViewController: UIViewController, UITableViewDelegate,UITableViewDataS
     var allProducts = [Product]()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationItem.setHidesBackButton(false, animated: false)
         tvProduct.delegate = self
         tvProduct.dataSource = self
         tvProduct.reloadData()
         allProducts.append(Product(name: "Camel", img: "check", price: 100.0, desc: "This is the camel"))
         allProducts.append(Product(name: "Tiger", img: "check", price: 100.0, desc: "This is the Tiger"))
-
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "product_details":
